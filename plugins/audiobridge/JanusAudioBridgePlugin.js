@@ -241,7 +241,7 @@ export default class JanusAudioBridgePulgin extends JanusPlugin {
         room: roomid,
         id:user_id,
         display: this.displayName,
-        muted: true,
+        muted: muted,
       });
       this.setRoomID(roomid);
       if (
@@ -298,7 +298,7 @@ export default class JanusAudioBridgePulgin extends JanusPlugin {
   }
 
 
-  configure = async (stream) => {
+  configure = async (stream,muted) => {
     // console.log("here")
     try {
       // console.log("joined to room.");
@@ -317,7 +317,7 @@ export default class JanusAudioBridgePulgin extends JanusPlugin {
       let response = await this.sendAsyncWithJsep(
         {
           request: "configure",
-          muted: true,
+          muted: muted,
           // recording preferences
           record: false,
           // filename: "recording.wav",
