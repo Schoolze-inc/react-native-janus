@@ -370,6 +370,8 @@ export default class JanusAudioBridgePulgin extends JanusPlugin {
       }
 
       this.pc.close();
+      this.janus.detach();
+      this.janus.socket.disconnect();
       this.janus.socket.detachPlugin(this);
 
       console.error("detach", "hangupResponse", hangupResponse);
