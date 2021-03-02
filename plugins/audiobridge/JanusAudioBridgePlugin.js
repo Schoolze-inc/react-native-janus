@@ -346,40 +346,58 @@ export default class JanusAudioBridgePulgin extends JanusPlugin {
     }
   };
 
-  detach = async () => {
+   detach = async () => {
     try {
       let additionalConfig = {};
+      // console.log("start");
 
       if (this.janus.apiSecret) {
         additionalConfig["apisecret"] = this.janus.apiSecret;
       }
 
-      const hangupResponse = await this.janus.socket.sendAsync({
+      await this.janus.socket.sendAsync({
         janus: "hangup",
         session_id: this.janus.socket.sessionID,
         handle_id: this.handleID,
         ...additionalConfig,
       });
-
-      if (hangupResponse.janus === "success") {
-      }
-
-      const detachResponse = await this.detach();
-
-      if (detachResponse.janus === "success") {
-      }
-
+      // console.log("ehet");
+      // await this.detach();
       this.pc.close();
-      this.janus.detach();
-      this.janus.socket.disconnect();
       this.janus.socket.detachPlugin(this);
+      return true;
 
-      console.error("detach", "hangupResponse", hangupResponse);
-      console.error("detach", "detachResponse", detachResponse);
     } catch (e) {
       console.error("detach", e);
     }
   };
+// detach = async () => {
+  //   try {
+  //     let additionalConfig = {};
+
+  //     if (this.janus.apiSecret) {
+  //       additionalConfig["apisecret"] = this.janus.apiSecret;
+  //     }
+
+  //     const hangupResponse = await this.janus.socket.sendAsync({
+  //       janus: "hangup",
+  //       session_id: this.janus.socket.sessionID,
+  //       handle_id: this.handleID,
+  //       ...additionalConfig,
+  //     });
+
+ 
+
+  //     this.pc.close();
+  //     this.janus.detach();
+  //     this.janus.socket.disconnect();
+  //     this.janus.socket.detachPlugin(this);
+
+  //     console.error("detach", "hangupResponse", hangupResponse);
+  //   } catch (e) {
+  //     console.error("detach", e);
+  //   }
+  // };
 
   get_participants = async() => {
     try{
