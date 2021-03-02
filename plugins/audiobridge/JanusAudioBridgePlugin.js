@@ -364,7 +364,6 @@ export default class JanusAudioBridgePulgin extends JanusPlugin {
       // console.log("ehet");
       // await this.detach();
       this.pc.close();
-      this.janus.detach();
       this.janus.socket.disconnect();
       this.janus.socket.detachPlugin(this);
       return true;
