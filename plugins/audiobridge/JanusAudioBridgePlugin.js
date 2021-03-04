@@ -51,6 +51,8 @@ export default class JanusAudioBridgePulgin extends JanusPlugin {
   onNewuserJoin = null;
   onUserLeave = null;
   onRoomevents = null; 
+
+  onForceDestroyHappen = null;
   
   constructor(janus) {
     super("janus.plugin.audiobridge", janus);
@@ -112,6 +114,10 @@ export default class JanusAudioBridgePulgin extends JanusPlugin {
  onRoomeventsOccur = (response) => {
     this.onRoomevents(response);
  };
+ 
+ onForceDestroy = (response)=>{
+   this.onForceDestroyHappen(response);
+ }
 
   onConnectedListner = (response)=>{
      this.onConnectedUserListner(response);
@@ -127,6 +133,7 @@ export default class JanusAudioBridgePulgin extends JanusPlugin {
 
 
   onMessage = async (message) => {
+    // console.log(message);
     switch (message.janus) {
       case "webrtcup": {
         this.isWebRtcUp = true;
@@ -178,7 +185,7 @@ export default class JanusAudioBridgePulgin extends JanusPlugin {
 
       case "hangup": {
         message.reason;
-        console.log("plugin", "hangup", message.reason);
+        // console.log("plugin", "hangup", message.reason);
         return;
       }
 
@@ -222,6 +229,8 @@ export default class JanusAudioBridgePulgin extends JanusPlugin {
           }
         }else if(data.audiobridge === "joined"){
               this.onNewUserJoinRoom(data.participants);
+        }else if(data.audiobridge ==='destroyed'){
+             this.onForceDestroy(data.room);
         }
 
         // console.log("plugin", "event", data);
@@ -268,13 +277,13 @@ export default class JanusAudioBridgePulgin extends JanusPlugin {
 
           return;
         } else {
-          console.error("join", joinResponse);
+          // console.error("join", joinResponse);
         }
       } else {
-        console.error("join", joinResponse);
+        // console.error("join", joinResponse);
       }
     } catch (e) {
-      console.error("join", e);
+      // console.error("join", e);
     }
   };
 
@@ -293,7 +302,7 @@ export default class JanusAudioBridgePulgin extends JanusPlugin {
       );
       // console.log("mute response", response);
     }catch(e){
-      console.log(e);
+      // console.log(e);
     }
   }
 
@@ -342,7 +351,7 @@ export default class JanusAudioBridgePulgin extends JanusPlugin {
       }
       this.cachedCandidates = [];
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -369,7 +378,7 @@ export default class JanusAudioBridgePulgin extends JanusPlugin {
       return true;
 
     } catch (e) {
-      console.error("detach", e);
+      // console.error("detach", e);
     }
   };
 // detach = async () => {
@@ -407,16 +416,25 @@ export default class JanusAudioBridgePulgin extends JanusPlugin {
         request: "listparticipants",
         room: 1234,
       });
-      console.log(createResponse);
+      // console.log(createResponse);
     }catch(e){
-      console.log(e);
+      // console.log(e);
     }
-  }
+  };
+
+  destory_a_room = async(room) => {
+    try{
+     await this.sendAsync({
+         request:'destroy',
+         room:room
+       });
+    }catch(e){
+    }
+  };
 
   create = async (room,title) => {
     try {
-      // console.log("room",room);
-      console.log(room);
+
       let createResponse = await this.sendAsync({
         request: "create",
         room: room,
@@ -425,12 +443,8 @@ export default class JanusAudioBridgePulgin extends JanusPlugin {
         record: false,
       });
       this.setRoomID(room);
-      
-      // todo finish response handling
-      console.log("create respone", createResponse);
       return;
     } catch (e) {
-      console.log("create", e);
     }
   };
 }
