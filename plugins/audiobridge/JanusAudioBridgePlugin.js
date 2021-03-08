@@ -409,6 +409,19 @@ export default class JanusAudioBridgePulgin extends JanusPlugin {
   //   }
   // };
 
+get_audio_level = (id) => {
+    return new Promise((resolve,reject)=>{
+      this.pc.getStats().then((state)=>{
+        state.forEach(resport=>{
+          if(resport.type==='media-source'){
+              resolve(resport.audioLevel);
+          }
+        });
+      }); 
+    });
+     
+};
+
   get_participants = async() => {
     try{
       // console.log("im called");
