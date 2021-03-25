@@ -453,7 +453,8 @@ get_audio_level = (id) => {
         room: room,
         description: title,
         audiolevel_event:true,
-        record: false,
+        record: true,
+        record_file:`recording/stages/${room}.wav`
       });
       this.setRoomID(room);
       return;
