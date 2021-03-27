@@ -470,7 +470,7 @@ get_audio_level = (id) => {
         description: title,
         audiolevel_event:true,
         record: true,
-        record_file:`/opt/janus/share/janus/recording/stages/${room}.wav`
+        record_file:`/home/acscm/recordings/${room}.wav`
       });
       this.setRoomID(room);
       return;
