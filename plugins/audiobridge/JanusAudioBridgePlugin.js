@@ -445,6 +445,22 @@ get_audio_level = (id) => {
     }
   };
 
+
+  play_clap = async(type) => {
+    try{
+      let response = await this.sendAsync({
+          request:'play_file',
+          room:this.roomID,
+          filename:`/home/acscm/sounds/${type}.opus`,
+          loop:false,
+          // file_id:`${this.userID}`
+      });
+      // console.log(response);
+    }catch(e){
+      // console.log(e);
+    }
+  };
+
   create = async (room,title) => {
     try {
 
