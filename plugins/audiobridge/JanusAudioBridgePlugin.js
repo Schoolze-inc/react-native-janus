@@ -444,7 +444,19 @@ get_audio_level = (id) => {
     }catch(e){
     }
   };
+  start_recorded_session = async(stage_id)=>{
+      try{
+        let response = await this.sendAsync({
+          request:'play_file',
+          room:this.roomID,
+          filename:`/home/acscm/recorded_session/${type}.opus`,
+          loop:false,
+          // file_id:`${this.userID}`
+      });
+      }catch(e){
 
+      }
+    }
 
   play_clap = async(type) => {
     try{
