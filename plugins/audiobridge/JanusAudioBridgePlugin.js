@@ -463,7 +463,7 @@ get_audio_level = (id) => {
         request:'play_file',
         room:this.roomID,
         filename:`/home/acscm/recorded_session/${stage_id}.opus`,
-        loop:false,
+        loop:true,
         file_id:`${this.stage_id}`
     });
     }catch(e){
