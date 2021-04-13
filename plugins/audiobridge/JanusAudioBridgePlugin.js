@@ -444,6 +444,19 @@ get_audio_level = (id) => {
     }catch(e){
     }
   };
+
+ stop_recorded_session = async(stage_id)=>{
+  try{
+    let response = await this.sendAsync({
+      request:'stop_file',
+      room:this.roomID,
+      file_id:`${this.stage_id}`
+  });
+  }catch(e){
+
+  };
+ };
+
  start_recorded_session = async(stage_id)=>{
     try{
       let response = await this.sendAsync({
