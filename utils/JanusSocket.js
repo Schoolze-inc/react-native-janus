@@ -1,6 +1,7 @@
 import JanusPlugin from './JanusPlugin';
 import JanusUtils from './JanusUtils';
 import BackgroundTimer from 'react-native-background-timer';
+import {Platform} from 'react-native';
 
 export default class JanusSocket {
     constructor(address) {
@@ -129,8 +130,11 @@ export default class JanusSocket {
 
     disconnect = async () => {
         this.ws.close();
-        //clearTimeout(this.keepAliveTimeoutID);
-        BackgroundTimer.clearTimeout(this.keepAliveTimeoutID);
+        if(Platform.OS==='android'){
+            BackgroundTimer.clearTimeout(this.keepAliveTimeoutID);
+            return;
+        }
+        clearTimeout(this.keepAliveTimeoutID);
     };
 
     onMessage = async (message) => {
@@ -172,11 +176,14 @@ export default class JanusSocket {
     };
 
     setKeepAliveTimeout = () => {
-        if (this.connected) {
-        this.keepAliveTimeoutID = BackgroundTimer.setTimeout(() => {
-            this.keepAlive();
-        }, 25000);
-        //this.keepAliveTimeoutID = setTimeout(this.keepAlive, 25000);
+        if(this.connected) {
+            if(Platform.OS==='android'){
+                this.keepAliveTimeoutID = BackgroundTimer.setTimeout(() => {
+                    this.keepAlive();
+                }, 25000);
+                return;
+            }
+            this.keepAliveTimeoutID = setTimeout(this.keepAlive, 25000);
         }
     };
 }
